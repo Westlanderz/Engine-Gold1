@@ -4,6 +4,7 @@
 #include "System.hpp"
 #include "Types.hpp"
 #include <unordered_map>
+#include <memory>
 
 class SystemManager {
     private:

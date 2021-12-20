@@ -1,6 +1,12 @@
 #ifndef COORDINATOR_HPP
 #define COORDINATOR_HPP
 
+#include "Types.hpp"
+#include "ComponentManager.hpp"
+#include "EntityManager.hpp"
+#include "SystemManager.hpp"
+#include <memory>
+
 class Coordinator {
 	private:
 		std::unique_ptr<ComponentManager> componentManager;
