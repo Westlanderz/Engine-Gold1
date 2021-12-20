@@ -5,6 +5,7 @@
 #include "Types.hpp"
 #include <unordered_map>
 #include <memory>
+#include <cassert>
 
 class ComponentManager {
 	private:
@@ -13,25 +14,56 @@ class ComponentManager {
 		ComponentType nextComponentType;
 
 		template<typename T>
-		std::shared_ptr<ComponentArray<T>> getComponentArray();
+		std::shared_ptr<ComponentArray<T>> getComponentArray() {
+			const char* componentName = typeid(T).name();
+
+			assert(componentTypes.find(componentName) != componentTypes.end() && "Component not registered.");
+
+			return std::static_pointer_cast<ComponentArray<T>>(componentArrays[componentName]);
+		}
 
 	public:
 		template<typename T>
-		void registerComponent();
+		void registerComponent() {
+			const char* componentName = typeid(T).name();
+
+			assert(componentTypes.find(componentName) == componentTypes.end() && "Component already registered.");
+
+			componentTypes.insert({componentName, nextComponentType});
+			componentArrays.insert({componentName, std::make_shared<ComponentArray<T>>()});
+			
+			nextComponentType++;
+		}
 
 		template<typename T>
-		ComponentType getComponentType();
+		ComponentType getComponentType() {
+			const char* componentName = typeid(T).name();
+
+			assert(componentTypes.find(componentName) != componentTypes.end() && "Component not registered.");
+
+			return componentTypes[componentName];
+		}
 
 		template<typename T>
-		void addComponent(Entity entity, T component);
+		void addComponent(Entity entity, T component) {
+			getComponentArray<T>()->insertData(entity, component);
+		}
 
 		template<typename T>
-		void removeComponent(Entity entity);
+		void removeComponent(Entity entity) {
+			getComponentArray<T>()->removeData(entity);
+		}
 
 		template<typename T>
-		T& getComponent(Entity entity);
+		T& getComponent(Entity entity) {
+			return getComponentArray<T>()->getData(entity);
+		}
 
-		void entityDestroyed(Entity entity);
+		void entityDestroyed(Entity entity) {
+			for(auto const& pair : componentArrays) {
+				pair.second->entityDestroyed(entity);
+			}
+		}
 };
 
 #endif // COMPONENTMANAGER_HPP

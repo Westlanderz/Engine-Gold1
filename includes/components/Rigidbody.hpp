@@ -1,13 +1,11 @@
 #ifndef RIGIDBODY_HPP
 #define RIGIDBODY_HPP
 
+#include "../math/Vector3.hpp"
+
 struct Rigidbody {
-    float mass;
-    float drag;
-    float angularDrag;
-    bool useGravity;
-    bool isKinematic;
-    bool freezeRotation;
+    Vector3 velocity;
+	Vector3 acceleration;
 };
 
 #endif // RIGIDBODY_HPP

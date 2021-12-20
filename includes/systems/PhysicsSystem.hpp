@@ -2,11 +2,12 @@
 #define PHYSICSSYSTEM_HPP
 
 #include "../core/System.hpp"
+#include "../../includes/core/Coordinator.hpp"
+#include <memory>
 
 class PhysicsSystem : public System {
 	public:
-		std::shared_ptr<PhysicsSystem> Init();
-
+		void Init();
 		void Update(float dt);
 };
 
