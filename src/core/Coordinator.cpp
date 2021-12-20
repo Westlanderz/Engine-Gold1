@@ -6,14 +6,6 @@ void Coordinator::init() {
 	systemManager = std::make_unique<SystemManager>();
 }
 
-void Coordinator::update() {
-	
-}
-
-void Coordinator::destroy() {
-	
-}
-
 Entity Coordinator::createEntity() {
 	return entityManager->createEntity();
 }
