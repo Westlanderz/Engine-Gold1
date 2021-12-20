@@ -17,7 +17,7 @@ class ComponentManager {
 
 	public:
 		template<typename T>
-		ComponentType registerComponent();
+		void registerComponent();
 
 		template<typename T>
 		ComponentType getComponentType();
