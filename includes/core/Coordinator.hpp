@@ -15,8 +15,6 @@ class Coordinator {
 
 	public:
 		void init();
-		void update();
-		void destroy();
 
 		Entity createEntity();
 		void destroyEntity(Entity entity);
