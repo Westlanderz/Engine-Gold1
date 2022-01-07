@@ -7,7 +7,6 @@
 extern Coordinator coordinator;
 
 void PhysicsSystem::Init() {
-	coordinator.registerComponent<Transform>();
 	coordinator.registerComponent<Rigidbody>();
 	coordinator.registerComponent<Gravity>();
 
@@ -19,15 +18,18 @@ void PhysicsSystem::Init() {
 }
 
 void PhysicsSystem::Update(float dt) {
-	for (auto const& entity : entities) {
+	for(auto const& entity : entities) {
 		auto& rigidBody = coordinator.getComponent<Rigidbody>(entity);
 		auto& transform = coordinator.getComponent<Transform>(entity);
 
 		// Forces
-		auto & gravity = coordinator.getComponent<Gravity>(entity);
+		auto& gravity = coordinator.getComponent<Gravity>(entity);
 
 		transform.position += rigidBody.velocity * dt;
 
 		rigidBody.velocity += gravity.force * dt;
+
+		std::cout << "The new position of entity " << entity << " is " << transform.position.x << ", " << transform.position.y << ", " << transform.position.z << std::endl;
 	}
+
 }

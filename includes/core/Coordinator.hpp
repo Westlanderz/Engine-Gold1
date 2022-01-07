@@ -5,6 +5,8 @@
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
 #include "SystemManager.hpp"
+#include "EventManager.hpp"
+#include "../components/Transform.hpp"
 #include <memory>
 
 class Coordinator {
@@ -12,6 +14,7 @@ class Coordinator {
 		std::unique_ptr<ComponentManager> componentManager;
 		std::unique_ptr<EntityManager> entityManager;
 		std::unique_ptr<SystemManager> systemManager;
+		std::unique_ptr<EventManager> eventManager;
 
 	public:
 		Coordinator() {}
@@ -20,6 +23,8 @@ class Coordinator {
 			entityManager = std::make_unique<EntityManager>();
 			componentManager = std::make_unique<ComponentManager>();
 			systemManager = std::make_unique<SystemManager>();
+			eventManager = std::make_unique<EventManager>();
+			registerComponent<Transform>();
 		}
 
 		Entity createEntity() {
@@ -78,6 +83,19 @@ class Coordinator {
 		void setSystemSignature(Signature signature) {
 			systemManager->setSystemSignature<T>(signature);
 		}
+
+		void addEventListener(EventId eventId, std::function<void(Event&)> const& listener) {
+			eventManager->addListener(eventId, listener);
+		}
+
+		void sendEvent(Event& event) {
+			eventManager->sendEvent(event);
+		}
+
+		void sendEvent(EventId eventId) {
+			eventManager->sendEvent(eventId);
+		}
+
 };
 
 #endif // COORDINATOR_HPP
